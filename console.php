@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 use DI\Container;
@@ -6,7 +5,7 @@ use Ecotone\Lite\EcotoneLiteConfiguration;
 use Ecotone\Lite\GatewayAwareContainer;
 use Ecotone\Messaging\Config\ServiceConfiguration;
 
-$rootCatalog = realpath(__DIR__ . "/..");
+$rootCatalog = __DIR__;
 require $rootCatalog . "/vendor/autoload.php";
 
 $container = new class() implements GatewayAwareContainer {
