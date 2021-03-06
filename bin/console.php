@@ -41,4 +41,4 @@ $messagingSystem = EcotoneLiteConfiguration::createWithConfiguration(
     []
 );
 
-//
+// run messaging below:
