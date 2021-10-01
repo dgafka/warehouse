@@ -21,3 +21,12 @@ services:
       - 15672:15672
     networks:
       - default
+  database:
+    image: postgres:14.0-alpine
+    environment:
+      POSTGRES_USER: guest
+      POSTGRES_PASSWOR: guest
+    ports:
+      - 5432:5432
+    networks:
+      - default

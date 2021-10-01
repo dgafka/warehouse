@@ -1,44 +1,13 @@
 <?php
+/** @var \Ecotone\Messaging\Config\ConfiguredMessagingSystem $messagingSystem */
+require __DIR__ . "/bootstrap.php";
 
-use DI\Container;
-use Ecotone\Lite\EcotoneLiteConfiguration;
-use Ecotone\Lite\GatewayAwareContainer;
-use Ecotone\Messaging\Config\ServiceConfiguration;
+/** @var \Ecotone\Modelling\CommandBus $commandBus */
+$commandBus = $messagingSystem->getGatewayByName(\Ecotone\Modelling\CommandBus::class);
+/** @var \Ecotone\Modelling\QueryBus $queryBus */
+$queryBus = $messagingSystem->getGatewayByName(\Ecotone\Modelling\QueryBus::class);
+/** @var \Ecotone\Modelling\EventBus $eventBus */
+$eventBus = $messagingSystem->getGatewayByName(\Ecotone\Modelling\EventBus::class);
 
-$rootCatalog = __DIR__;
-require $rootCatalog . "/vendor/autoload.php";
 
-$container = new class() implements GatewayAwareContainer {
-    private Container $container;
-
-    public function __construct()
-    {
-        $this->container = new Container();
-    }
-
-    public function get($id)
-    {
-        return $this->container->get($id);
-    }
-
-    public function has($id)
-    {
-        return $this->container->has($id);
-    }
-
-    public function addGateway(string $referenceName, object $gateway): void
-    {
-        $this->container->set($referenceName, $gateway);
-    }
-};
-
-$messagingSystem = EcotoneLiteConfiguration::createWithConfiguration(
-    $rootCatalog,
-    $container,
-    ServiceConfiguration::createWithDefaults()
-        ->withLoadCatalog("src"),
-    [],
-    false
-);
-
-// run messaging below:
+// run your example code here
