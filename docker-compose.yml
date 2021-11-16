@@ -11,22 +11,3 @@ services:
     command: sleep 999999
     networks:
       - default
-  rabbitmq:
-    image: rabbitmq:3.6-management-alpine
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    ports:
-      - 5672:5672
-      - 15672:15672
-    networks:
-      - default
-  database:
-    image: postgres:14.0-alpine
-    environment:
-      POSTGRES_USER: guest
-      POSTGRES_PASSWOR: guest
-    ports:
-      - 5432:5432
-    networks:
-      - default

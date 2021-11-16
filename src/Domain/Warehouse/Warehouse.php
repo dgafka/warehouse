@@ -22,42 +22,36 @@ class Warehouse
     private int $warehouseId;
     private array $stock = [];
 
-    use WithAggregateEvents;
     use WithAggregateVersioning;
 
     public function __construct() {}
 
     #[CommandHandler]
-    public static function register(RegisterWarehouse $command): static
+    public static function register(RegisterWarehouse $command): array
     {
-        $warehouse = new static();
-        $warehouse->recordThat(new WarehouseWasRegistered($command->warehouseId, $command->name));
-
-        return $warehouse;
+        return [new WarehouseWasRegistered($command->warehouseId, $command->name)];
     }
 
     #[CommandHandler]
-    public function observeProduct(ObserveProduct $command): void
+    public function observeProduct(ObserveProduct $command): array
     {
-        $this->recordThat(new ProductWasObserved($command->warehouseId, $command->productId, $command->quantity));
+        return [new ProductWasObserved($command->warehouseId, $command->productId, $command->quantity)];
     }
 
     #[CommandHandler]
-    public function addProductToStock(AddProductToStock $command): void
+    public function addProductToStock(AddProductToStock $command): array
     {
-        $this->recordThat(new ProductStockQuantityWasIncreased($command->warehouseId, $command->productId, $command->quantity));
+        return [new ProductStockQuantityWasIncreased($command->warehouseId, $command->productId, $command->quantity)];
     }
 
     #[CommandHandler]
-    public function subtrackProductFromStock(SubtractProductFromStock $command): void
+    public function subtrackProductFromStock(SubtractProductFromStock $command): array
     {
         if ($this->stock[$command->productId] < $command->quantity) {
-            $this->recordThat(new ProductWasOutOfStock($command->warehouseId, $command->productId, $command->quantity));
-
-            return;
+            return [new ProductWasOutOfStock($command->warehouseId, $command->productId, $command->quantity)];
         }
 
-        $this->recordThat(new ProductStockQuantityWasDecreased($command->warehouseId, $command->productId, $command->quantity));
+        return [new ProductStockQuantityWasDecreased($command->warehouseId, $command->productId, $command->quantity)];
     }
 
     #[EventSourcingHandler]

@@ -10,6 +10,6 @@ class InformEmployee
     #[EventHandler]
     public function when(ProductWasOutOfStock $event): void
     {
-        echo "Product {$event->productId} was out of stock. For order with quantity {$event->quantity}\n";
+        echo "Employee Notification! Product {$event->productId} was out of stock. For order with quantity {$event->quantity}\n";
     }
 }
